@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <wchar.h>
+#include <wctype.h>
 
 #if !defined(VERSION)
 #define VERSION "unknown"
@@ -23,30 +25,30 @@ void catmd(const char* filename) {
     return;
   }
 
-  printf("*%s*\n\n", filename);
+  wprintf(L"*%s*\n\n", filename);
 
   const char* extension = strrchr(filename, '.');
   if (extension != NULL) {
-    printf("```%s\n", extension + 1);
+    wprintf(L"```%s\n", extension + 1);
   } else {
-    printf("```\n");
+    wprintf(L"```\n");
   }
 
-  int ch;
-  while ((ch = fgetc(fp)) != EOF) {
-    if (isprint(ch) || ch == '\n' || ch == '\t') {
-      putchar(ch);
+  wint_t ch;
+  while ((ch = fgetwc(fp)) != WEOF) {
+    if (iswprint(ch) || ch == L'\n' || ch == L'\t') {
+      putwchar(ch);
     } else {
-      printf("\\x%02x", ch);
+      wprintf(L"\\x%02x", ch);
     }
   }
+  fclose(fp);
 
-  if (ch != '\n') {
-    putchar('\n');
+  if (ch != L'\n') {
+    putwchar(L'\n');
   }
 
-  printf("```\n\n");
-  fclose(fp);
+  wprintf(L"```text\n\n");
 }
 
 int main(int argc, char* argv[]) {
