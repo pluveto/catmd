@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -DVERSION=\"$(shell git describe --always --tags 2>/dev/null || echo unknown)\" -Wall -Wextra -O2
+CFLAGS = -DVERSION=\"$(shell git describe --tags --long 2>/dev/null || echo unknown)\" -Wall -Wextra -O2
 LDFLAGS = 
 
 .PHONY: all clean
