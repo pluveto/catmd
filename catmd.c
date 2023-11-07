@@ -24,7 +24,13 @@ void catmd(const char* filename) {
   }
 
   printf("*%s*\n\n", filename);
-  printf("```%s\n", strrchr(filename, '.') + 1);
+
+  const char* extension = strrchr(filename, '.');
+  if (extension != NULL) {
+    printf("```%s\n", extension + 1);
+  } else {
+    printf("```\n");
+  }
 
   int ch;
   while ((ch = fgetc(fp)) != EOF) {
