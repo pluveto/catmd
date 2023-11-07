@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +13,7 @@ void print_usage() {
   printf("Usage: catmd [options] <file ...>\n\n");
   printf("Options:\n");
   printf("  -h, --help     output usage information\n");
-  printf("  -V, --version  output the version number\n");
+  printf("  -v, --version  output the version number\n");
 }
 
 void catmd(const char* filename) {
@@ -27,7 +28,11 @@ void catmd(const char* filename) {
 
   int ch;
   while ((ch = fgetc(fp)) != EOF) {
-    putchar(ch);
+    if (isprint(ch) || ch == '\n' || ch == '\t') {
+      putchar(ch);
+    } else {
+      printf("\\x%02x", ch);
+    }
   }
 
   printf("```\n\n");
@@ -37,15 +42,15 @@ void catmd(const char* filename) {
 int main(int argc, char* argv[]) {
   int opt;
   static struct option long_options[] = {{"help", no_argument, 0, 'h'},
-                                         {"version", no_argument, 0, 'V'},
+                                         {"version", no_argument, 0, 'v'},
                                          {0, 0, 0, 0}};
 
-  while ((opt = getopt_long(argc, argv, "hV", long_options, NULL)) != -1) {
+  while ((opt = getopt_long(argc, argv, "hv", long_options, NULL)) != -1) {
     switch (opt) {
       case 'h':
         print_usage();
         exit(0);
-      case 'V':
+      case 'v':
         printf("catmd version %s\n", VERSION);
         exit(0);
       default:
