@@ -31,7 +31,7 @@ void catmd(const char* filename) {
   if (extension != NULL) {
     wprintf(L"```%s\n", extension + 1);
   } else {
-    wprintf(L"```\n");
+    wprintf(L"```text\n");
   }
 
   wint_t ch;
@@ -48,7 +48,7 @@ void catmd(const char* filename) {
     putwchar(L'\n');
   }
 
-  wprintf(L"```text\n\n");
+  wprintf(L"```\n\n");
 }
 
 int main(int argc, char* argv[]) {
