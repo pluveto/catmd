@@ -41,6 +41,10 @@ void catmd(const char* filename) {
     }
   }
 
+  if (ch != '\n') {
+    putchar('\n');
+  }
+
   printf("```\n\n");
   fclose(fp);
 }
